@@ -651,6 +651,11 @@
     [self.events removeObject:date];
 }
 
+- (void)removeAllEvents
+{
+    [self.events removeAllObjects];
+}
+
 + (UIImage *)imageNamed:(NSString *)name withColor:(UIColor *)color {
     UIImage *img = [UIImage imageNamed:name];
 
