@@ -78,6 +78,7 @@ typedef int startDay;
 - (void)addEventAtDate:(NSDate *)date;
 - (void)removeEventAtDate:(NSDate *)date;
 - (void)removeAllEvents;
+- (BOOL)hasEventAtDate:(NSDate *)date;
 
 @property (nonatomic, strong) UIColor *eventColor;
 @property (nonatomic, strong) UIColor *eventColorSelected;

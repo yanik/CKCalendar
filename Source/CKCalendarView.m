@@ -320,7 +320,7 @@
     while ([date laterDate:endDate] != date) {
         DateButton *dateButton = [self.dateButtons objectAtIndex:dateButtonPosition];
         dateButton.date = date;
-        if ([self.events containsObject:date]) {
+        if ([self hasEventAtDate:date]) {
             dateButton.backgroundColor = self.eventColor;
             if ([self date:dateButton.date isSameDayAsDate:self.selectedDate] ||
                 [self dateIsToday:dateButton.date]) {
@@ -654,6 +654,11 @@
 - (void)removeAllEvents
 {
     [self.events removeAllObjects];
+}
+
+- (BOOL)hasEventAtDate:(NSDate *)date
+{
+    return [self.events containsObject:date];
 }
 
 + (UIImage *)imageNamed:(NSString *)name withColor:(UIColor *)color {
