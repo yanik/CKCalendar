@@ -74,6 +74,14 @@ typedef int startDay;
 @property (nonatomic, strong) UIColor *disabledDateTextColor;
 @property (nonatomic, strong) UIColor *disabledDateBackgroundColor;
 
+// Events
+- (void)addEventAtDate:(NSDate *)date;
+- (void)removeEventAtDate:(NSDate *)date;
+- (void)removeAllEvents;
+
+@property (nonatomic, strong) UIColor *eventColor;
+@property (nonatomic, strong) UIColor *eventColorSelected;
+
 @end
 
 @protocol CKCalendarDelegate <NSObject>

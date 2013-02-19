@@ -24,11 +24,13 @@
 
         self.dateFormatter = [[NSDateFormatter alloc] init];
         [self.dateFormatter setDateFormat:@"dd/MM/yyyy"];
-        calendar.selectedDate = [self.dateFormatter dateFromString:@"18/07/2012"];
+        calendar.selectedDate = [self.dateFormatter dateFromString:@"20/02/2013"];
         calendar.minimumDate = [self.dateFormatter dateFromString:@"09/07/2012"];
-        calendar.maximumDate = [self.dateFormatter dateFromString:@"29/07/2012"];
+        calendar.maximumDate = [self.dateFormatter dateFromString:@"29/07/2014"];
         calendar.shouldFillCalendar = YES;
         calendar.adaptHeightToNumberOfWeeksInMonth = NO;
+        [calendar addEventAtDate:[self.dateFormatter dateFromString:@"23/02/2013"]];
+        [calendar addEventAtDate:[self.dateFormatter dateFromString:@"06/03/2013"]];
 
         calendar.frame = CGRectMake(10, 10, 300, 320);
         [self.view addSubview:calendar];

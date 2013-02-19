@@ -102,6 +102,8 @@
 @property (nonatomic, strong) NSCalendar *calendar;
 @property(nonatomic, assign) CGFloat cellWidth;
 
+@property (nonatomic, strong) NSMutableSet *events;
+
 @end
 
 @implementation CKCalendarView
@@ -139,6 +141,9 @@
 @synthesize shouldFillCalendar = _shouldFillCalendar;
 @synthesize adaptHeightToNumberOfWeeksInMonth = _adaptHeightToNumberOfWeeksInMonth;
 
+@synthesize events;
+@synthesize eventColor;
+@synthesize eventColorSelected;
 
 - (id)init {
     return [self initWithStartDay:startSunday];
@@ -152,6 +157,8 @@
     self.calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
     [self.calendar setLocale:[NSLocale currentLocale]];
 
+    self.events = [[NSMutableSet alloc] init];
+    
     self.cellWidth = DEFAULT_CELL_WIDTH;
 
     self.dateFormatter = [[NSDateFormatter alloc] init];
@@ -307,13 +314,19 @@
         [comps setWeek:numberOfWeeksToShow];
         endDate = [self.calendar dateByAddingComponents:comps toDate:date options:0];
     }
-
+    
+    
     NSUInteger dateButtonPosition = 0;
     while ([date laterDate:endDate] != date) {
         DateButton *dateButton = [self.dateButtons objectAtIndex:dateButtonPosition];
-
         dateButton.date = date;
-        if ([self date:dateButton.date isSameDayAsDate:self.selectedDate]) {
+        if ([self.events containsObject:date]) {
+            dateButton.backgroundColor = self.eventColor;
+            if ([self date:dateButton.date isSameDayAsDate:self.selectedDate] ||
+                [self dateIsToday:dateButton.date]) {
+                dateButton.backgroundColor = self.eventColorSelected;
+            }
+        } else if ([self date:dateButton.date isSameDayAsDate:self.selectedDate]) {
             dateButton.backgroundColor = self.selectedDateBackgroundColor;
             [dateButton setTitleColor:self.selectedDateTextColor forState:UIControlStateNormal];
         } else if ([self dateIsToday:dateButton.date]) {
@@ -421,6 +434,9 @@
 
     self.disabledDateTextColor = [UIColor lightGrayColor];
     self.disabledDateBackgroundColor = self.dateBackgroundColor;
+    
+    self.eventColor = UIColorFromRGB(0xDC143C); // Crimson Red
+    self.eventColorSelected = UIColorFromRGB(0xB0171F); // Indian Red
 }
 
 - (CGRect)calculateDayCellFrame:(NSDate *)date {
@@ -621,6 +637,18 @@
     NSInteger startDay = [self.calendar ordinalityOfUnit:NSDayCalendarUnit inUnit:NSEraCalendarUnit forDate:startDate];
     NSInteger endDay = [self.calendar ordinalityOfUnit:NSDayCalendarUnit inUnit:NSEraCalendarUnit forDate:endDate];
     return endDay - startDay;
+}
+
+#pragma mark - Events
+
+- (void)addEventAtDate:(NSDate *)date
+{
+    [self.events addObject:date];
+}
+
+- (void)removeEventAtDate:(NSDate *)date
+{
+    [self.events removeObject:date];
 }
 
 + (UIImage *)imageNamed:(NSString *)name withColor:(UIColor *)color {
