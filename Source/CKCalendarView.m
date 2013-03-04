@@ -281,6 +281,10 @@
     newFrame.size.height = containerHeight + CALENDAR_MARGIN + TOP_HEIGHT;
     self.frame = newFrame;
 
+    if ([self.delegate respondsToSelector:@selector(calendarDidResize:)]) {
+        [self.delegate calendarDidResize:self];
+    }
+
     self.highlight.frame = CGRectMake(1, 1, self.bounds.size.width - 2, 1);
 
     self.titleLabel.text = [self.dateFormatter stringFromDate:_monthShowing];
