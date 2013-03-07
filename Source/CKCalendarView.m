@@ -142,8 +142,10 @@
 @synthesize adaptHeightToNumberOfWeeksInMonth = _adaptHeightToNumberOfWeeksInMonth;
 
 @synthesize events;
-@synthesize eventColor;
-@synthesize eventColorSelected;
+@synthesize eventDateBackgroundColor;
+@synthesize eventDateTextColor;
+@synthesize selectedEventDateBackgroundColor;
+@synthesize selectedEventDateTextColor;
 
 - (id)init {
     return [self initWithStartDay:startSunday];
@@ -325,10 +327,11 @@
         DateButton *dateButton = [self.dateButtons objectAtIndex:dateButtonPosition];
         dateButton.date = date;
         if ([self hasEventAtDate:date]) {
-            dateButton.backgroundColor = self.eventColor;
+            dateButton.backgroundColor = self.eventDateBackgroundColor;
+            [dateButton setTitleColor:self.eventDateTextColor forState:UIControlStateNormal];
             if ([self date:dateButton.date isSameDayAsDate:self.selectedDate] ||
                 [self dateIsToday:dateButton.date]) {
-                dateButton.backgroundColor = self.eventColorSelected;
+                dateButton.backgroundColor = self.selectedEventDateBackgroundColor;
             }
         } else if ([self date:dateButton.date isSameDayAsDate:self.selectedDate]) {
             dateButton.backgroundColor = self.selectedDateBackgroundColor;
@@ -439,8 +442,10 @@
     self.disabledDateTextColor = [UIColor lightGrayColor];
     self.disabledDateBackgroundColor = self.dateBackgroundColor;
     
-    self.eventColor = UIColorFromRGB(0xDC143C); // Crimson Red
-    self.eventColorSelected = UIColorFromRGB(0xB0171F); // Indian Red
+    self.eventDateBackgroundColor = UIColorFromRGB(0xDC143C); // Crimson Red
+    self.eventDateTextColor = UIColorFromRGB(0xF2F2F2);
+    self.selectedEventDateBackgroundColor = self.selectedDateBackgroundColor;
+    self.selectedEventDateTextColor = self.selectedDateTextColor;
 }
 
 - (CGRect)calculateDayCellFrame:(NSDate *)date {
